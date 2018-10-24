@@ -19,9 +19,11 @@ func main() {
 	http.HandleFunc("/signin", Signin)
 	http.HandleFunc("/welcome", Welcome)
 	http.HandleFunc("/signup", Signup)
-	http.HandleFunc("/admin", Admin)
+	//http.HandleFunc("/admin", Admin)
 	http.HandleFunc("/traincommand", GetTrainCommand)
 	http.HandleFunc("/railwaycommand", GetRailwayCommand)
+	http.HandleFunc("/settraincommand", SetTrainCommand)
+	http.HandleFunc("/setrailwaycommand", SetRailwayCommand)
 	//http.HandleFunc("/upload", Upload)
 	//http.HandleFunc("/refresh", Refresh)
 	// start the server on port 8000

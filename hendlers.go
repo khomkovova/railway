@@ -1,6 +1,7 @@
 package main
 
 import (
+	"bytes"
 	"crypto/rand"
 	"crypto/rsa"
 	"crypto/sha256"
@@ -8,6 +9,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
+	"os/exec"
 )
 
 import b64 "encoding/base64"
@@ -28,15 +30,20 @@ type CommandsRailway struct {
 	Secondswitch int `json:"secondswitch"`
 }
 
+type CommandsAll struct {
+	Train Commands `json:"train"`
+	Railway CommandsRailway `json:"railway"`
+}
 type CredentialsRegistration struct {
 	Password string `json:"password"`
 	Username string `json:"username"`
 	Email string `json:"email"`
 }
 
+
 var commands Commands
 var commandsRailway  CommandsRailway
-
+var commandsAll CommandsAll
 
 func Signin(w http.ResponseWriter, r *http.Request) {
 	var creds CredentialsSignin
@@ -63,7 +70,7 @@ func Signin(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	http.SetCookie(w, &cookie)
-	http.Redirect(w, r, "/admin", http.StatusSeeOther)
+	http.Redirect(w, r, "/welcome", http.StatusSeeOther)
 }
 
 func Signup(w http.ResponseWriter, r *http.Request)  {
@@ -129,6 +136,65 @@ func Admin(w http.ResponseWriter, r *http.Request)  {
 
 }
 
+
+func SetTrainCommand(w http.ResponseWriter, r *http.Request)  {
+	user := decodeCookie(r)
+	if user == ""{
+		w.WriteHeader(http.StatusUnauthorized)
+		return
+	}
+	if user != "admin"{
+		http.Redirect(w, r, "/welcome", http.StatusSeeOther)
+		return
+	}
+
+	jd := json.NewDecoder(r.Body)
+
+	err := jd.Decode(&commands)
+	fmt.Println(commands)
+	if err !=nil{
+		w.WriteHeader(http.StatusBadRequest)
+		return
+	}
+	fmt.Println("command=", commands)
+	w.WriteHeader(http.StatusOK)
+
+
+
+}
+func SetRailwayCommand(w http.ResponseWriter, r *http.Request)  {
+	user := decodeCookie(r)
+	if user == ""{
+		w.WriteHeader(http.StatusUnauthorized)
+		return
+	}
+	if user != "admin"{
+		http.Redirect(w, r, "/welcome", http.StatusSeeOther)
+		return
+	}
+
+	jd := json.NewDecoder(r.Body)
+	var commandsRailwayTest CommandsRailway
+	err := jd.Decode(&commandsRailwayTest)
+	if !checkCommandRailway(commandsRailwayTest){
+		w.Write([]byte("Now upgrade railway and choose direction can be dangeros we can write to support team https://supportrailway.com"))
+		w.WriteHeader(http.StatusOK)
+		return
+	}
+	commandsRailway = commandsRailwayTest
+	fmt.Println(commandsRailway)
+	if err !=nil{
+		w.WriteHeader(http.StatusBadRequest)
+		return
+	}
+	fmt.Println("command=", commandsRailway)
+	w.WriteHeader(http.StatusOK)
+
+
+
+}
+
+
 func Welcome(w http.ResponseWriter, r *http.Request) {
 	user := decodeCookie(r)
 	if user == ""{
@@ -146,7 +212,10 @@ func Welcome(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusUnauthorized)
 		return
 	}
-	w.Write([]byte("{'speed':'" + string(commands.Speed) + "', 'direction':'" + string(commands.Direction) +"'}"))
+	commandsAll.Train = commands
+	commandsAll.Railway = commandsRailway
+	data, err := json.Marshal(commandsAll)
+	w.Write([]byte(data))
 
 
 
@@ -175,6 +244,22 @@ func GetRailwayCommand(w http.ResponseWriter, r *http.Request){
 	}
 	w.Write([]byte(string(commandsRailway.Firstswitch + '0')+string(commandsRailway.Secondswitch + '0')))
 
+
+}
+func checkCommandRailway(command CommandsRailway) bool {
+	cmd := exec.Command("./mycheck", string(command.Firstswitch +'0')+string(command.Secondswitch +'0') )
+	//cmd.Stdin = strings.NewReader("some input")
+	var out bytes.Buffer
+	cmd.Stdout = &out
+	err := cmd.Run()
+	if err != nil {
+		return false
+	}
+	fmt.Printf("Check return %s", out.String())
+	if out.String() != "True"{
+		return false
+	}
+	return true
 
 }
 
