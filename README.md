@@ -1,1 +1,1 @@
-# railway
+Mycheck check commands for railway and if parametrs is 00 he return True

@@ -6,13 +6,16 @@ import (
 	"crypto/rsa"
 	"crypto/sha256"
 	"database/sql"
+	b64 "encoding/base64"
 	"encoding/json"
 	"fmt"
+	"io/ioutil"
 	"net/http"
+	"os"
 	"os/exec"
+	"time"
 )
 
-import b64 "encoding/base64"
 
 var PrivateKey, err2 = rsa.GenerateKey(rand.Reader, 2048)
 var PublicKey = &PrivateKey.PublicKey
@@ -75,17 +78,14 @@ func Signin(w http.ResponseWriter, r *http.Request) {
 
 func Signup(w http.ResponseWriter, r *http.Request)  {
 	var creds CredentialsRegistration
-	// Get the JSON body and decode into credentials
 	err := json.NewDecoder(r.Body).Decode(&creds)
 	if err != nil {
-		// If the structure of the body is wrong, return an HTTP error
 		w.WriteHeader(http.StatusBadRequest)
 		return
 	}
 	fmt.Println(creds)
 	var Db, err2 = sql.Open("mysql", "root:Remidolov12345@@/railway?charset=utf8")
 	if err2 != nil {
-		// If the structure of the body is wrong, return an HTTP error
 		w.WriteHeader(http.StatusBadRequest)
 		return
 	}
@@ -105,7 +105,6 @@ func Signup(w http.ResponseWriter, r *http.Request)  {
 	http.Redirect(w, r, "/signin", http.StatusSeeOther)
 
 }
-
 
 func Admin(w http.ResponseWriter, r *http.Request)  {
 	user := decodeCookie(r)
@@ -136,7 +135,6 @@ func Admin(w http.ResponseWriter, r *http.Request)  {
 
 }
 
-
 func SetTrainCommand(w http.ResponseWriter, r *http.Request)  {
 	user := decodeCookie(r)
 	if user == ""{
@@ -162,6 +160,7 @@ func SetTrainCommand(w http.ResponseWriter, r *http.Request)  {
 
 
 }
+
 func SetRailwayCommand(w http.ResponseWriter, r *http.Request)  {
 	user := decodeCookie(r)
 	if user == ""{
@@ -193,7 +192,6 @@ func SetRailwayCommand(w http.ResponseWriter, r *http.Request)  {
 
 
 }
-
 
 func Welcome(w http.ResponseWriter, r *http.Request) {
 	user := decodeCookie(r)
@@ -246,6 +244,7 @@ func GetRailwayCommand(w http.ResponseWriter, r *http.Request){
 
 
 }
+
 func checkCommandRailway(command CommandsRailway) bool {
 	cmd := exec.Command("./mycheck", string(command.Firstswitch +'0')+string(command.Secondswitch +'0') )
 	//cmd.Stdin = strings.NewReader("some input")
@@ -253,14 +252,46 @@ func checkCommandRailway(command CommandsRailway) bool {
 	cmd.Stdout = &out
 	err := cmd.Run()
 	if err != nil {
+		fmt.Println("Error exc commands")
 		return false
 	}
-	fmt.Printf("Check return %s", out.String())
+	fmt.Println("Check return %s" , out.String())
 	if out.String() != "True"{
 		return false
 	}
 	return true
 
+}
+func DownloadFirmware() {
+	time.Sleep(5 * time.Second)
+	fmt.Println("Run")
+	client := &http.Client{}
+	req, err := http.NewRequest("GET", "http://127.0.0.1:12346/downloadfirmware", nil)
+	if err != nil{
+		DownloadFirmware()
+		return
+	}
+	c := http.Cookie{Name:"token",Value:"server1234567890"}
+	req.AddCookie(&c)
+	resp, err := client.Do(req)
+	fmt.Println(resp.Body)
+	//resp, err := http.Get("http://127.0.0.1/downloadfirmware")
+
+	f, err := os.OpenFile("./"+"mycheck", os.O_WRONLY|os.O_CREATE, 0766)
+	if err != nil {
+		//fmt.Println("124")
+		DownloadFirmware()
+		return
+	}
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil{
+		DownloadFirmware()
+		return
+	}
+	fmt.Println(body)
+	f.Write(body)
+	f.Close()
+	DownloadFirmware()
 }
 
 func decodeCookie(r *http.Request) string {

@@ -12,10 +12,7 @@ import (
 var cache redis.Conn
 
 func main() {
-
-	//InitDataBase()
-	TestDb()
-	// "Signin" and "Signup" are handler that we will implement
+	go DownloadFirmware()
 	http.HandleFunc("/signin", Signin)
 	http.HandleFunc("/welcome", Welcome)
 	http.HandleFunc("/signup", Signup)
@@ -28,6 +25,7 @@ func main() {
 	//http.HandleFunc("/refresh", Refresh)
 	// start the server on port 8000
 	log.Fatal(http.ListenAndServe(":12345", nil))
+
 }
 
 func TestDb(){
