@@ -4,23 +4,26 @@ import (
 	"database/sql"
 	"fmt"
 	_ "github.com/go-sql-driver/mysql"
-	"github.com/gomodule/redigo/redis"
 	"log"
 	"net/http"
 )
 
-var cache redis.Conn
+
 
 func main() {
 	go DownloadFirmware()
+	fs := http.FileServer(http.Dir("public/js"))
+	http.Handle("/js/", http.StripPrefix("/js/", fs))
 	http.HandleFunc("/signin", Signin)
 	http.HandleFunc("/welcome", Welcome)
 	http.HandleFunc("/signup", Signup)
-	//http.HandleFunc("/admin", Admin)
-	http.HandleFunc("/traincommand", GetTrainCommand)
-	http.HandleFunc("/railwaycommand", GetRailwayCommand)
-	http.HandleFunc("/settraincommand", SetTrainCommand)
-	http.HandleFunc("/setrailwaycommand", SetRailwayCommand)
+	http.HandleFunc("/admin", Admin)
+	http.HandleFunc("/api/signin", ApiSignin)
+	http.HandleFunc("/api/railwayinfo", GetRailwayInfo)
+	http.HandleFunc("/api/traincommand", GetTrainCommand)
+	http.HandleFunc("/api/railwaycommand", GetRailwayCommand)
+	http.HandleFunc("/api/settraincommand", SetTrainCommand)
+	http.HandleFunc("/api/setrailwaycommand", SetRailwayCommand)
 	//http.HandleFunc("/upload", Upload)
 	//http.HandleFunc("/refresh", Refresh)
 	// start the server on port 8000

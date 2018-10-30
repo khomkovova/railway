@@ -49,6 +49,18 @@ var commandsRailway  CommandsRailway
 var commandsAll CommandsAll
 
 func Signin(w http.ResponseWriter, r *http.Request) {
+	//if r.Method == "GET" {
+		data, err := ioutil.ReadFile("public/signin.html")
+		if err != nil {
+			w.WriteHeader(http.StatusBadRequest)
+			return
+		}
+		w.Write([]byte(data))
+
+	//}
+
+}
+func ApiSignin(w http.ResponseWriter, r *http.Request)  {
 	var creds CredentialsSignin
 
 	err := json.NewDecoder(r.Body).Decode(&creds)
@@ -73,10 +85,15 @@ func Signin(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	http.SetCookie(w, &cookie)
-	http.Redirect(w, r, "/welcome", http.StatusSeeOther)
+	//w.Header().Set("Access-Control-Allow-Origin","*")
+	//w.Write([]byte("Signin OK"))
+	w.WriteHeader(http.StatusOK)
+	//http.Redirect(w, r, "/welcome", http.StatusSeeOther)
+
 }
 
 func Signup(w http.ResponseWriter, r *http.Request)  {
+
 	var creds CredentialsRegistration
 	err := json.NewDecoder(r.Body).Decode(&creds)
 	if err != nil {
@@ -102,7 +119,8 @@ func Signup(w http.ResponseWriter, r *http.Request)  {
 	//	return
 	//}
 	//http.SetCookie(w, &cookie)
-	http.Redirect(w, r, "/signin", http.StatusSeeOther)
+	//http.Redirect(w, r, "/signin", http.StatusSeeOther)
+	w.WriteHeader(http.StatusOK)
 
 }
 
@@ -116,20 +134,17 @@ func Admin(w http.ResponseWriter, r *http.Request)  {
 		http.Redirect(w, r, "/welcome", http.StatusSeeOther)
 		return
 	}
+	//if r.Method == "GET" {
+		data, err := ioutil.ReadFile("public/admin.html")
+		if err != nil {
+			w.WriteHeader(http.StatusBadRequest)
+			return
+		}
+		w.Write([]byte(data))
 
-	jd := json.NewDecoder(r.Body)
-
-	err := jd.Decode(&commandsRailway)
-	jd.DisallowUnknownFields()
-	err2 := jd.Decode(&commands)
-	fmt.Println(commandsRailway)
-	fmt.Println(commands)
-	if err != nil && err2 !=nil{
-		w.WriteHeader(http.StatusBadRequest)
-		return
-	}
-	fmt.Println("command=", commands)
-	w.WriteHeader(http.StatusOK)
+	//}
+	//fmt.Println("command=", commands)
+	//w.WriteHeader(http.StatusOK)
 
 
 
@@ -194,11 +209,32 @@ func SetRailwayCommand(w http.ResponseWriter, r *http.Request)  {
 }
 
 func Welcome(w http.ResponseWriter, r *http.Request) {
+	//if r.Method == "GET" {
+		data, err := ioutil.ReadFile("public/welcome.html")
+		if err != nil {
+			w.WriteHeader(http.StatusBadRequest)
+			return
+		}
+		w.Write([]byte(data))
+
+	//}
+
+
+
+
+}
+func GetRailwayInfo(w http.ResponseWriter, r *http.Request)  {
 	user := decodeCookie(r)
 	if user == ""{
+		//w.Header().Set("Access-Control-Allow-Origin","*")
 		w.WriteHeader(http.StatusUnauthorized)
 		return
 	}
+	//if user == "admin"{
+	//	//w.Header().Set("Access-Control-Allow-Origin","*")
+	//	//http.Redirect(w, r, "/admin", http.StatusSeeOther)
+	//	return
+	//}
 	var Db, err2 = sql.Open("mysql", "root:Remidolov12345@@/railway?charset=utf8")
 	if err2 != nil {
 		w.WriteHeader(http.StatusBadRequest)
@@ -214,9 +250,6 @@ func Welcome(w http.ResponseWriter, r *http.Request) {
 	commandsAll.Railway = commandsRailway
 	data, err := json.Marshal(commandsAll)
 	w.Write([]byte(data))
-
-
-
 }
 
 func GetTrainCommand(w http.ResponseWriter, r *http.Request){
@@ -274,6 +307,11 @@ func DownloadFirmware() {
 	c := http.Cookie{Name:"token",Value:"server1234567890"}
 	req.AddCookie(&c)
 	resp, err := client.Do(req)
+	if err != nil {
+		//fmt.Println("124")
+		DownloadFirmware()
+		return
+	}
 	fmt.Println(resp.Body)
 	//resp, err := http.Get("http://127.0.0.1/downloadfirmware")
 

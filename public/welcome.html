@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:v-on="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Admin</title>
+</head>
+<body>
+<script src="js/jquery-3.3.1.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<div id="railway" >
+    <p>{{speed}}</p>
+    <p>{{direction}}</p>
+    <p>{{firstswitch}}</p>
+    <p>{{secondswitch}}</p>
+    <button v-on:click="getInfo">Update Info</button>
+    <p>{{jsonInfo}}</p>
+</div>
+
+<script src="js/vue.js"></script>
+<script src="js/welcome.js"></script>
+
+</body>
+</html>
