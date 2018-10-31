@@ -48,6 +48,20 @@ var commands Commands
 var commandsRailway  CommandsRailway
 var commandsAll CommandsAll
 
+
+func IndexPage(w http.ResponseWriter, r *http.Request) {
+	//if r.Method == "GET" {
+	data, err := ioutil.ReadFile("public/index.html")
+	if err != nil {
+		w.WriteHeader(http.StatusBadRequest)
+		return
+	}
+	w.Write([]byte(data))
+
+	//}
+
+}
+
 func Signin(w http.ResponseWriter, r *http.Request) {
 	//if r.Method == "GET" {
 		data, err := ioutil.ReadFile("public/signin.html")
@@ -56,7 +70,6 @@ func Signin(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 		w.Write([]byte(data))
-
 	//}
 
 }
@@ -92,7 +105,18 @@ func ApiSignin(w http.ResponseWriter, r *http.Request)  {
 
 }
 
-func Signup(w http.ResponseWriter, r *http.Request)  {
+func Signup(w http.ResponseWriter, r *http.Request) {
+
+	data, err := ioutil.ReadFile("public/signup.html")
+	if err != nil {
+		w.WriteHeader(http.StatusBadRequest)
+		return
+	}
+	w.Write([]byte(data))
+	//}
+
+}
+func ApiSignup(w http.ResponseWriter, r *http.Request)  {
 
 	var creds CredentialsRegistration
 	err := json.NewDecoder(r.Body).Decode(&creds)
@@ -107,11 +131,12 @@ func Signup(w http.ResponseWriter, r *http.Request)  {
 		return
 	}
 	id, err := Db.Query("INSERT INTO users (username,password)" + "VALUES ('" + creds.Username + "','" + creds.Password + "')" )
-	fmt.Println(id)
+	//fmt.Println(id)
 	if err != nil{
-		w.WriteHeader(http.StatusBadRequest)
+		w.Write([]byte("This username using or your credentials is not correct"))
 		return
 	}
+	id.Close()
 	//Db.Close()
 	//cookie, err3 := encodeCookie(creds.Username)
 	//if err3 == false{
@@ -120,6 +145,7 @@ func Signup(w http.ResponseWriter, r *http.Request)  {
 	//}
 	//http.SetCookie(w, &cookie)
 	//http.Redirect(w, r, "/signin", http.StatusSeeOther)
+	w.Write([]byte("You success registered"))
 	w.WriteHeader(http.StatusOK)
 
 }
@@ -157,7 +183,8 @@ func SetTrainCommand(w http.ResponseWriter, r *http.Request)  {
 		return
 	}
 	if user != "admin"{
-		http.Redirect(w, r, "/welcome", http.StatusSeeOther)
+		//http.Redirect(w, r, "/welcome", http.StatusSeeOther)
+		w.WriteHeader(http.StatusBadRequest)
 		return
 	}
 
@@ -210,6 +237,10 @@ func SetRailwayCommand(w http.ResponseWriter, r *http.Request)  {
 
 func Welcome(w http.ResponseWriter, r *http.Request) {
 	//if r.Method == "GET" {
+	if !getStatusUser(r){
+		w.WriteHeader(http.StatusUnauthorized)
+		return
+	}
 		data, err := ioutil.ReadFile("public/welcome.html")
 		if err != nil {
 			w.WriteHeader(http.StatusBadRequest)
@@ -224,31 +255,17 @@ func Welcome(w http.ResponseWriter, r *http.Request) {
 
 }
 func GetRailwayInfo(w http.ResponseWriter, r *http.Request)  {
-	user := decodeCookie(r)
-	if user == ""{
-		//w.Header().Set("Access-Control-Allow-Origin","*")
-		w.WriteHeader(http.StatusUnauthorized)
-		return
-	}
-	//if user == "admin"{
-	//	//w.Header().Set("Access-Control-Allow-Origin","*")
-	//	//http.Redirect(w, r, "/admin", http.StatusSeeOther)
-	//	return
-	//}
-	var Db, err2 = sql.Open("mysql", "root:Remidolov12345@@/railway?charset=utf8")
-	if err2 != nil {
-		w.WriteHeader(http.StatusBadRequest)
-		return
-	}
-	var username string
-	err := Db.QueryRow("SELECT username FROM users WHERE username=?", user).Scan(&username)
-	if err != nil || username == ""{
+	if !getStatusUser(r){
 		w.WriteHeader(http.StatusUnauthorized)
 		return
 	}
 	commandsAll.Train = commands
 	commandsAll.Railway = commandsRailway
 	data, err := json.Marshal(commandsAll)
+	if err != nil{
+		w.WriteHeader(http.StatusBadRequest)
+		return
+	}
 	w.Write([]byte(data))
 }
 
@@ -364,7 +381,32 @@ func encodeCookie(user string) (http.Cookie, bool)  {
 	}
 	sEnc := b64.StdEncoding.EncodeToString(ciphertext)
 	cookie := http.Cookie{Name:"token", Value:sEnc}
+	cookie.Path = "/"
 	return cookie, true
 
+}
+
+func getStatusUser(r *http.Request) bool {
+	user := decodeCookie(r)
+	if user == ""{
+		//w.Header().Set("Access-Control-Allow-Origin","*")
+
+		return false
+	}
+	//if user == "admin"{
+	//	//w.Header().Set("Access-Control-Allow-Origin","*")
+	//	//http.Redirect(w, r, "/admin", http.StatusSeeOther)
+	//	return
+	//}
+	var Db, err2 = sql.Open("mysql", "root:Remidolov12345@@/railway?charset=utf8")
+	if err2 != nil {
+		return false
+	}
+	var username string
+	err := Db.QueryRow("SELECT username FROM users WHERE username=?", user).Scan(&username)
+	if err != nil || username == ""{
+		return false
+	}
+	return true
 }
 

@@ -1,8 +1,7 @@
 new Vue({
     el: '#app',
     data:{
-        title :"asdfg",
-        text1: "",
+        error:"",
         username:"",
         password:""
     },
@@ -31,21 +30,17 @@ new Vue({
             // (function($){
 
                 console.log("asdfasdf");
-                $.ajax({
-                    url: 'http://127.0.0.1:12345/api/signin',
-                    type: 'post',
-                    data: '{"username":"' + this.username + '", "password":"' + this.password + '"}' ,
-                    async: false,
-                    xhrFields: { withCredentials: true },
-                    success: function( data, textStatus, jQxhr ){
-                        console.log( textStatus, jQxhr );
-                        location.href = '/welcome';
-                    },
-                    error: function( jqXhr, textStatus, errorThrown ){
-                        console.log( errorThrown );
-                    }
-                });
-            // })(jQuery);
+            axios({ method: "POST", "url": "http://127.0.0.1:12345/api/signin", data:'{"username":"' + this.username + '", "password":"' + this.password + '"}' , withCredentials: true}).then(result => {
+                // this.jsonInfo = result.data;
+                // var obj = JSON.parse(result.data);
+                // console.error(result.data);
+                window.location.assign('/welcome');
+                console.error(result.data);
+            }, error => {
+                this.error="Bad username or password";
+                // console.error(error);
+            });
+
         }
     }
 });

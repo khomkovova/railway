@@ -1,11 +1,41 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:v-on="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
     <title>Admin</title>
 </head>
 <body>
-<script>alert("WELCOME ADMIN")</script>
 
+<script src="js/jquery-3.3.1.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<div id="train">
+    Speed:<label>
+    <input type="text"  v-on:input="speed=$event.target.value">
+</label>
+    Direction:<label>
+    <input type="text" v-on:input="direction=$event.target.value">
+</label>
+    <button v-on:click="submitTrainCommand">Submit</button>
+</div>
+
+
+<div id="railway">
+    Firstswitch:<label>
+    <input type="text"  v-on:input="firstswitch=$event.target.value">
+</label>
+    Secondtswitch:<label>
+    <input type="text" v-on:input="secondtswitch=$event.target.value">
+</label>
+    <button v-on:click="submitRailwayCommand">Submit</button>
+</div>
+<br>
+<a href="/">Main</a>
+<br>
+<a href="welcome">Welcome</a>
+
+<script src="js/vue.js"></script>
+<script src="js/train.js"></script>
+<script src="js/railway.js"></script>
 </body>
 </html>

@@ -7,8 +7,9 @@
 <body>
 <script src="js/jquery-3.3.1.min.js"></script>
 <script src="js/bootstrap.min.js"></script>
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 <div id="app">
-    <p>{{username}}</p>
+    <p>{{error}}</p>
     Username:<label>
     <input type="text"  v-on:input="username=$event.target.value">
 </label>
@@ -17,6 +18,8 @@
 </label>
     <button v-on:click="signin">Signin</button>
 </div>
+<a href="signup">Signup</a>
+<a href="main">Main</a>
 <script src="js/vue.js"></script>
 <script src="js/signin.js"></script>
 
