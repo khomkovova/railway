@@ -5,6 +5,7 @@ import (
 	"fmt"
 	_ "github.com/go-sql-driver/mysql"
 	"log"
+	"net"
 	"net/http"
 )
 
@@ -29,7 +30,12 @@ func main() {
 	//http.HandleFunc("/upload", Upload)
 	//http.HandleFunc("/refresh", Refresh)
 	// start the server on port 8000
-	log.Fatal(http.ListenAndServe(":12345", nil))
+	l, err := net.Listen("tcp4", ":12345")
+	if err != nil {
+		log.Fatal(err)
+	}
+	log.Fatal(http.Serve(l, nil))
+
 
 }
 
