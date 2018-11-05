@@ -10,6 +10,7 @@
 <script src="js/bootstrap.min.js"></script>
 <script src="js/axios.min.js"></script>
 <div id="train">
+    <p>{{status}}</p>
     Speed:<label>
     <input type="text"  v-on:input="speed=$event.target.value">
 </label>
@@ -21,13 +22,14 @@
 
 
 <div id="railway">
+    <p>{{status}}</p>
     Firstswitch:<label>
     <input type="text"  v-on:input="firstswitch=$event.target.value">
 </label>
     Secondtswitch:<label>
     <input type="text" v-on:input="secondtswitch=$event.target.value">
 </label>
-    <button v-on:click="submitRailwayCommand">Submit</button>
+    <button v-on:click="submitRailwaynCommand">Submit</button>
 </div>
 <br>
 <a href="/">Main</a>

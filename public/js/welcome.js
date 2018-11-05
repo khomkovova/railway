@@ -9,10 +9,7 @@ new Vue({
         secondswitch:0
     },
     mounted(){
-        axios({ method: "GET", "url": "http://127.0.0.1:12345/api/railwayinfo" }).then(result => {
-            // this.jsonInfo = result.data;
-            // var obj = JSON.parse(result.data);
-            // console.error(result.data);
+        axios({ method: "GET", "url": "http:/api/railwayinfo" }).then(result => {
             this.direction = result.data["train"]["direction"];
             this.speed = result.data["train"]["speed"];
             this.firstswitch = result.data["railway"]["firstswitch"];
@@ -22,13 +19,8 @@ new Vue({
         });
     },
     methods:{
-
         getInfo() {
-            axios({ method: "GET", "url": "http://127.0.0.1:12345/api/railwayinfo" }).then(result => {
-                // this.jsonInfo = result.data;
-                // var obj = JSON.parse(result.data);
-                // console.error(result.data);
-                console.error(result.data);
+            axios({ method: "GET", "url": "http:/api/railwayinfo" }).then(result => {
                 this.direction = result.data["train"]["direction"];
                 this.speed = result.data["train"]["speed"];
                 this.firstswitch = result.data["railway"]["firstswitch"];
