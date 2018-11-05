@@ -2,20 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="63524754-4255-4547-910c-87327d95f309" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/my" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/my.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/hendlers.go" beforeDir="false" afterPath="$PROJECT_DIR$/hendlers.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main" beforeDir="false" afterPath="$PROJECT_DIR$/main" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mycheck" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/admin.html" beforeDir="false" afterPath="$PROJECT_DIR$/public/admin.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/my_javascript.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/railway.js" beforeDir="false" afterPath="$PROJECT_DIR$/public/js/railway.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/signin.js" beforeDir="false" afterPath="$PROJECT_DIR$/public/js/signin.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/signup.js" beforeDir="false" afterPath="$PROJECT_DIR$/public/js/signup.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/train.js" beforeDir="false" afterPath="$PROJECT_DIR$/public/js/train.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/welcome.js" beforeDir="false" afterPath="$PROJECT_DIR$/public/js/welcome.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/signup.html" beforeDir="false" afterPath="$PROJECT_DIR$/public/signup.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main.go" beforeDir="false" afterPath="$PROJECT_DIR$/main.go" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -37,7 +26,7 @@
       </usages-collector>
       <usages-collector id="statistics.file.extensions.open">
         <counts>
-          <entry key="go" value="6" />
+          <entry key="go" value="7" />
           <entry key="html" value="14" />
           <entry key="js" value="35" />
           <entry key="md" value="1" />
@@ -46,7 +35,7 @@
       </usages-collector>
       <usages-collector id="statistics.file.types.open">
         <counts>
-          <entry key="Go" value="6" />
+          <entry key="Go" value="7" />
           <entry key="HTML" value="14" />
           <entry key="JavaScript" value="35" />
           <entry key="PLAIN_TEXT" value="1" />
@@ -55,7 +44,7 @@
       </usages-collector>
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
-          <entry key="go" value="3395" />
+          <entry key="go" value="3517" />
           <entry key="gtpl" value="1" />
           <entry key="html" value="368" />
           <entry key="js" value="663" />
@@ -65,7 +54,7 @@
       <usages-collector id="statistics.file.types.edit">
         <counts>
           <entry key="DTD" value="1" />
-          <entry key="Go" value="3394" />
+          <entry key="Go" value="3516" />
           <entry key="HTML" value="368" />
           <entry key="JavaScript" value="663" />
           <entry key="PLAIN_TEXT" value="76" />
@@ -86,7 +75,7 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/public/admin.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="195">
+            <state relative-caret-position="352">
               <caret line="31" column="38" selection-start-line="31" selection-start-column="38" selection-end-line="31" selection-end-column="38" />
             </state>
           </provider>
@@ -95,10 +84,22 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/hendlers.go">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="183">
-              <caret line="272" column="21" lean-forward="true" selection-start-line="272" selection-start-column="21" selection-end-line="272" selection-end-column="21" />
+            <state relative-caret-position="243">
+              <caret line="121" column="18" lean-forward="true" selection-start-line="121" selection-start-column="18" selection-end-line="121" selection-end-column="18" />
               <folding>
                 <element signature="e#14#192#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/main.go">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="315">
+              <caret line="28" column="64" selection-start-line="28" selection-start-column="64" selection-end-line="28" selection-end-column="64" />
+              <folding>
+                <element signature="n#!!block;n#TestDb#0" />
               </folding>
             </state>
           </provider>
@@ -131,6 +132,7 @@
       <find>StatusSeeOther</find>
       <find>decodeCookie</find>
       <find>checkCommandRailway</find>
+      <find>fmt</find>
     </findStrings>
   </component>
   <component name="GOROOT" path="/usr/lib/go-1.10" />
@@ -145,7 +147,6 @@
         <option value="$PROJECT_DIR$/public/index.html" />
         <option value="$PROJECT_DIR$/public/signin.html" />
         <option value="$PROJECT_DIR$/public/welcome.html" />
-        <option value="$PROJECT_DIR$/main.go" />
         <option value="$PROJECT_DIR$/public/js/my_javascript.js" />
         <option value="$PROJECT_DIR$/public/js/signin.js" />
         <option value="$PROJECT_DIR$/public/js/signup.js" />
@@ -154,6 +155,7 @@
         <option value="$PROJECT_DIR$/public/js/welcome.js" />
         <option value="$PROJECT_DIR$/public/js/railway.js" />
         <option value="$PROJECT_DIR$/public/admin.html" />
+        <option value="$PROJECT_DIR$/main.go" />
         <option value="$PROJECT_DIR$/hendlers.go" />
       </list>
     </option>
@@ -332,16 +334,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/main.go">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="210">
-          <caret line="21" column="29" selection-start-line="21" selection-start-column="29" selection-end-line="21" selection-end-column="29" />
-          <folding>
-            <element signature="n#!!block;n#TestDb#0" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/public/js/jquery-3.3.1.min.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="30">
@@ -403,15 +395,25 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/public/admin.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="195">
+        <state relative-caret-position="352">
           <caret line="31" column="38" selection-start-line="31" selection-start-column="38" selection-end-line="31" selection-end-column="38" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/main.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="315">
+          <caret line="28" column="64" selection-start-line="28" selection-start-column="64" selection-end-line="28" selection-end-column="64" />
+          <folding>
+            <element signature="n#!!block;n#TestDb#0" />
+          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/hendlers.go">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="183">
-          <caret line="272" column="21" lean-forward="true" selection-start-line="272" selection-start-column="21" selection-end-line="272" selection-end-column="21" />
+        <state relative-caret-position="243">
+          <caret line="121" column="18" lean-forward="true" selection-start-line="121" selection-start-column="18" selection-end-line="121" selection-end-column="18" />
           <folding>
             <element signature="e#14#192#0" expanded="true" />
           </folding>

@@ -27,9 +27,6 @@ func main() {
 	http.HandleFunc("/api/railwaycommand", GetRailwayCommand)
 	http.HandleFunc("/api/settraincommand", SetTrainCommand)
 	http.HandleFunc("/api/setrailwaycommand", SetRailwayCommand)
-	//http.HandleFunc("/upload", Upload)
-	//http.HandleFunc("/refresh", Refresh)
-	// start the server on port 8000
 	l, err := net.Listen("tcp4", ":12345")
 	if err != nil {
 		log.Fatal(err)

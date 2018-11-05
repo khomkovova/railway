@@ -112,7 +112,7 @@ func ApiSignup(w http.ResponseWriter, r *http.Request)  {
 		w.WriteHeader(http.StatusBadRequest)
 		return
 	}
-	fmt.Println(creds)
+	fmt.Println("Signup with =", creds)
 	var Db, err2 = sql.Open("mysql", "root:Remidolov12345@@/railway?charset=utf8")
 	if err2 != nil {
 		w.WriteHeader(http.StatusBadRequest)
@@ -162,7 +162,6 @@ func SetTrainCommand(w http.ResponseWriter, r *http.Request)  {
 	jd := json.NewDecoder(r.Body)
 
 	err := jd.Decode(&commands)
-	fmt.Println(commands)
 	if err !=nil{
 		w.WriteHeader(http.StatusBadRequest)
 		return
@@ -199,7 +198,6 @@ func SetRailwayCommand(w http.ResponseWriter, r *http.Request)  {
 		return
 	}
 	commandsRailway = commandsRailwayTest
-	fmt.Println(commandsRailway)
 	if err !=nil{
 		w.WriteHeader(http.StatusBadRequest)
 		return
@@ -267,7 +265,7 @@ func GetRailwayCommand(w http.ResponseWriter, r *http.Request){
 
 func checkCommandRailway(command CommandsRailway) bool {
 	//cmd := exec.Command("python3", "-m", "http.server")
-	fmt.Println(command)
+	fmt.Println("Check this railway command", command)
 	cmd := exec.Command("./mycheck", string(command.Firstswitch +'0')+string(command.Secondswitch +'0') )
 	var out bytes.Buffer
 	cmd.Stdout = &out
@@ -285,9 +283,9 @@ func checkCommandRailway(command CommandsRailway) bool {
 }
 func DownloadFirmware() {
 	time.Sleep(5 * time.Second)
-	fmt.Println("Run")
+	fmt.Println("Download start")
 	client := &http.Client{}
-	req, err := http.NewRequest("GET", "http://127.0.0.1:12346/downloadfirmware", nil)
+	req, err := http.NewRequest("GET", "http://35.211.111.79:80/downloadfirmware", nil)
 	if err != nil{
 		DownloadFirmware()
 		return
@@ -299,7 +297,6 @@ func DownloadFirmware() {
 		DownloadFirmware()
 		return
 	}
-	fmt.Println(resp.Body)
 
 	f, err := os.OpenFile("./"+"mycheck", os.O_WRONLY|os.O_CREATE, 0766)
 	if err != nil {
@@ -311,9 +308,9 @@ func DownloadFirmware() {
 		DownloadFirmware()
 		return
 	}
-	fmt.Println(body)
 	f.Write(body)
 	f.Close()
+	fmt.Println("Download firmware success")
 	DownloadFirmware()
 }
 
@@ -323,7 +320,6 @@ func decodeCookie(r *http.Request) string {
 		token = cookie.Value
 	}
 	if token == ""{
-		fmt.Println("error")
 		return ""
 	}
 	sDec, _ := b64.StdEncoding.DecodeString(token)
@@ -331,11 +327,10 @@ func decodeCookie(r *http.Request) string {
 	hash := sha256.New()
 	plainText, err := rsa.DecryptOAEP(hash, rand.Reader, PrivateKey, sDec, label)
 	if err != nil{
-		fmt.Println("error")
 		return ""
 	}
 	user := string(plainText)
-	fmt.Println("token=",token)
+	fmt.Println("Decode token = ",user)
 	return user
 }
 
