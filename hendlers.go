@@ -10,6 +10,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
+	"log"
 	"net/http"
 	"os"
 	"os/exec"
@@ -265,20 +266,38 @@ func GetRailwayCommand(w http.ResponseWriter, r *http.Request){
 
 func checkCommandRailway(command CommandsRailway) bool {
 	//cmd := exec.Command("python3", "-m", "http.server")
-	fmt.Println("Check this railway command", command)
-	cmd := exec.Command("./mycheck", string(command.Firstswitch +'0')+string(command.Secondswitch +'0') )
+	cmd := exec.Command("./mycheck", string(command.Firstswitch) + string(command.Secondswitch))
 	var out bytes.Buffer
 	cmd.Stdout = &out
-	err := cmd.Run()
-	if err != nil {
-		fmt.Println("Error exc commands")
-		return false
+	if err := cmd.Start(); err != nil {
+		log.Fatal(err)
 	}
-	fmt.Println("Check return %s" , out.String())
-	if out.String() != "True"{
+
+	// Wait for the process to finish or kill it after a timeout:
+	done := make(chan error, 1)
+	go func() {
+		done <- cmd.Wait()
+	}()
+	select {
+	case <-time.After(10 * time.Millisecond):
+		if err := cmd.Process.Kill(); err != nil {
+			log.Fatal("failed to kill process: ", err)
+			return false
+		}
+		log.Println("process killed as timeout reached")
 		return false
+	case err := <-done:
+		if err != nil {
+			log.Fatalf("process finished with error = %v", err)
+			return false
+		}
+		log.Print("process finished successfully")
+		fmt.Println("Check return %s" , out.String())
+		if out.String() != "True"{
+			return false
+		}
+		return true
 	}
-	return true
 
 }
 func DownloadFirmware() {
