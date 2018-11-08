@@ -2321,7 +2321,7 @@
         var _this9 = this;
 
         if (this._isBodyOverflowing) {
-          // Note: DOMNode.style.paddingRight returns the actual value or '' if not set
+          // Note: DOMNode.style.css.paddingRight returns the actual value or '' if not set
           //   while $(DOMNode).css('padding-right') returns the calculated value or 0 if not set
           var fixedContent = [].slice.call(document.querySelectorAll(Selector.FIXED_CONTENT));
           var stickyContent = [].slice.call(document.querySelectorAll(Selector.STICKY_CONTENT)); // Adjust fixed content padding
@@ -3552,7 +3552,7 @@
 
         this._clear();
 
-        var queries = this._selector.split(','); // eslint-disable-next-line arrow-body-style
+        var queries = this._selector.split(','); // eslint-disable-next-line arrow-body-style.css
 
 
         queries = queries.map(function (selector) {

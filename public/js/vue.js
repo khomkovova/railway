@@ -4455,7 +4455,7 @@ function applyNS (vnode, ns, force) {
 }
 
 // ref #5318
-// necessary to ensure parent re-render when deep bindings like :style and
+// necessary to ensure parent re-render when deep bindings like :style.css and
 // :class are used on slot nodes
 function registerDeepBindings (data) {
   if (isObject(data.style)) {
@@ -5081,7 +5081,7 @@ Vue.version = '2.5.17';
 
 // these are reserved for web because they are directly compiled away
 // during template compilation
-var isReservedAttr = makeMap('style,class');
+var isReservedAttr = makeMap('style.css,class');
 
 // attributes that should be using props for binding
 var acceptValue = makeMap('input,textarea,option,select,progress');
@@ -5208,7 +5208,7 @@ var namespaceMap = {
 };
 
 var isHTMLTag = makeMap(
-  'html,body,base,head,link,meta,style,title,' +
+  'html,body,base,head,link,meta,style.css,title,' +
   'address,article,aside,footer,header,h1,h2,h3,h4,h5,h6,hgroup,nav,section,' +
   'div,dd,dl,dt,figcaption,figure,picture,hr,img,li,main,ol,p,pre,ul,' +
   'a,b,abbr,bdi,bdo,br,cite,code,data,dfn,em,i,kbd,mark,q,rp,rt,rtc,ruby,' +
@@ -5952,7 +5952,7 @@ function createPatchFunction (backend) {
   var hydrationBailed = false;
   // list of modules that can skip create hook during hydration because they
   // are already rendered on the client or has no need for initialization
-  // Note: style is excluded because it relies on initial clone for future
+  // Note: style.css is excluded because it relies on initial clone for future
   // deep updates (#7063).
   var isRenderedModule = makeMap('attrs,class,staticClass,staticStyle,key');
 
@@ -7206,10 +7206,10 @@ var parseStyleText = cached(function (cssText) {
   return res
 });
 
-// merge static and dynamic style data on the same vnode
+// merge static and dynamic style.css data on the same vnode
 function normalizeStyleData (data) {
   var style = normalizeStyleBinding(data.style);
-  // static style is pre-processed into an object during compilation
+  // static style.css is pre-processed into an object during compilation
   // and is always a fresh object, so it's safe to merge into it
   return data.staticStyle
     ? extend(data.staticStyle, style)
@@ -7228,8 +7228,8 @@ function normalizeStyleBinding (bindingStyle) {
 }
 
 /**
- * parent component style should be after child's
- * so that parent component's style could override it
+ * parent component style.css should be after child's
+ * so that parent component's style.css could override it
  */
 function getStyle (vnode, checkChild) {
   var res = {};
@@ -7319,12 +7319,12 @@ function updateStyle (oldVnode, vnode) {
   var oldStaticStyle = oldData.staticStyle;
   var oldStyleBinding = oldData.normalizedStyle || oldData.style || {};
 
-  // if static style exists, stylebinding already merged into it when doing normalizeStyleData
+  // if static style.css exists, stylebinding already merged into it when doing normalizeStyleData
   var oldStyle = oldStaticStyle || oldStyleBinding;
 
   var style = normalizeStyleBinding(vnode.data.style) || {};
 
-  // store normalized style under a different key for next diff
+  // store normalized style.css under a different key for next diff
   // make sure to clone it if it's reactive, since the user likely wants
   // to mutate it.
   vnode.data.normalizedStyle = isDef(style.__ob__)
@@ -8660,10 +8660,10 @@ function transformNode$1 (el, options) {
       var res = parseText(staticStyle, options.delimiters);
       if (res) {
         warn(
-          "style=\"" + staticStyle + "\": " +
+          "style.css=\"" + staticStyle + "\": " +
           'Interpolation inside attributes has been removed. ' +
           'Use v-bind or the colon shorthand instead. For example, ' +
-          'instead of <div style="{{ val }}">, use <div :style="val">.'
+          'instead of <div style.css="{{ val }}">, use <div :style.css="val">.'
         );
       }
     }
@@ -8682,7 +8682,7 @@ function genData$1 (el) {
     data += "staticStyle:" + (el.staticStyle) + ",";
   }
   if (el.styleBinding) {
-    data += "style:(" + (el.styleBinding) + "),";
+    data += "style.css:(" + (el.styleBinding) + "),";
   }
   return data
 }
@@ -8724,7 +8724,7 @@ var isNonPhrasingTag = makeMap(
   'address,article,aside,base,blockquote,body,caption,col,colgroup,dd,' +
   'details,dialog,div,dl,dt,fieldset,figcaption,figure,footer,form,' +
   'h1,h2,h3,h4,h5,h6,head,header,hgroup,hr,html,legend,li,menuitem,meta,' +
-  'optgroup,option,param,rp,rt,source,style,summary,tbody,td,tfoot,th,thead,' +
+  'optgroup,option,param,rp,rt,source,style.css,summary,tbody,td,tfoot,th,thead,' +
   'title,tr,track'
 );
 
@@ -8759,7 +8759,7 @@ var IS_REGEX_CAPTURING_BROKEN = false;
 });
 
 // Special Elements (can contain anything)
-var isPlainTextElement = makeMap('script,style,textarea', true);
+var isPlainTextElement = makeMap('script,style.css,textarea', true);
 var reCache = {};
 
 var decodingMap = {
@@ -8791,7 +8791,7 @@ function parseHTML (html, options) {
   var last, lastTag;
   while (html) {
     last = html;
-    // Make sure we're not in a plaintext content element like script/style
+    // Make sure we're not in a plaintext content element like script/style.css
     if (!lastTag || !isPlainTextElement(lastTag)) {
       var textEnd = html.indexOf('<');
       if (textEnd === 0) {
@@ -9640,7 +9640,7 @@ function makeAttrsMap (attrs) {
   return map
 }
 
-// for script (e.g. type="x/template") or style, do not decode content
+// for script (e.g. type="x/template") or style.css, do not decode content
 function isTextTag (el) {
   return el.tag === 'script' || el.tag === 'style'
 }

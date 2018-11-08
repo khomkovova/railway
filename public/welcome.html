@@ -2,23 +2,29 @@
 <html lang="en" xmlns:v-on="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
-    <title>Admin</title>
+    <link rel="stylesheet" href="js/style.css">
+    <title>Railway info</title>
 </head>
 <body>
+<footer>
+    <a class="link" href="admin">Admin</a>
+    <a class="link" href="/">Main</a>
+</footer>
 <script src="js/jquery-3.3.1.min.js"></script>
 <script src="js/bootstrap.min.js"></script>
-<script src="js/axios.min.js"></script>
-<div id="railway" >
-    <p>{{speed}}</p>
-    <p>{{direction}}</p>
-    <p>{{firstswitch}}</p>
-    <p>{{secondswitch}}</p>
-    <button v-on:click="getInfo">Update Info</button>
-    <p>{{jsonInfo}}</p>
+<script src="js/axios.min.js"></script><div class="header">
+    <h1>Railway info</h1>
 </div>
 
-<a href="admin">Admin</a>
-<a href="/">Main</a>
+<dir id="railway" >
+    <p class="info"> Speed: <span>{{speed}}</span> </p>
+    <p class="info"> Direction:  <span>{{direction}}</span></p>
+    <p class="info">  Firstswitch: <span>{{firstswitch}}</span></p>
+    <p class="info">  Secondswitch: <span>{{secondswitch}}</span></p>
+    <button class="btn" v-on:click="getInfo">Update Info</button>
+</dir>
+
+
 
 <script src="js/vue.js"></script>
 <script src="js/welcome.js"></script>

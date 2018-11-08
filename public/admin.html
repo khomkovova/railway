@@ -3,38 +3,69 @@
 <head>
     <meta charset="UTF-8">
     <title>Admin</title>
+    <link rel="stylesheet" href="js/style.css">
+    <script src="js/jquery-3.3.1.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/axios.min.js"></script>
 </head>
 <body>
+<footer>
+    <a class="link" href="/">Main</a>
+    <a class="link" href="welcome">Welcome</a>
+</footer>
 
-<script src="js/jquery-3.3.1.min.js"></script>
-<script src="js/bootstrap.min.js"></script>
-<script src="js/axios.min.js"></script>
-<div id="train">
+<div class="header">
+    <h1>Train commands</h1>
+</div>
+<dir id="train">
     <p>{{status}}</p>
+    <div class="input-group">
     Speed:<label>
-    <input type="text"  v-on:input="speed=$event.target.value">
+    <input type="number"  min="0" max="8" v-on:input="speed=$event.target.value">
 </label>
-    Direction:<label>
-    <input type="text" v-on:input="direction=$event.target.value">
-</label>
-    <button v-on:click="submitTrainCommand">Submit</button>
+    </div>
+        <div>
+            <p>Direction:</p>
+            <br>
+            Forward:  <label><input type="radio" value="1" name="direction" v-on:input="direction=$event.target.value"></label>
+            <br>
+            <br>
+            Back:  <label><input type="radio" value="0" name="direction" v-on:input="direction=$event.target.value"></label>
+            <br>
+        </div>
+    <br>
+    <button class="btn" v-on:click="submitTrainCommand">Submit</button>
+</dir>
+
+<div class="header">
+    <h1>Railway commands</h1>
 </div>
-
-
-<div id="railway">
+<dir id="railway">
+    <div>
     <p>{{status}}</p>
-    Firstswitch:<label>
-    <input type="text"  v-on:input="firstswitch=$event.target.value">
+        <p>Firstswitch:</p>
+        <br>
+        Right:  <label><input type="radio" value="1"  name="firstswithch" v-on:input="firstswitch=$event.target.value"/></label>
+        <br>
+        Left:  <label><input type="radio" value="0" checked name="firstswithch" v-on:input="firstswitch=$event.target.value"></label>
+        <br>
+        <br>
+
+        <p>Secondswitch:</p>
+        <br>
+        Right:  <label><input type="radio" value="1"  name="secondswithch" v-on:input="secondswithch=$event.target.value"/></label>
+        <br>
+        Left:  <label><input type="radio" value="0" checked name="secondswithch" v-on:input="secondswithch=$event.target.value"></label>
+        <br>
+        <br>
+    <button class="btn" v-on:click="submitRailwaynCommand">Submit</button>
+    </div>
+</dir>
+
+<label class="switch">
+    <input type="checkbox">
+    <span class="slider"></span>
 </label>
-    Secondtswitch:<label>
-    <input type="text" v-on:input="secondtswitch=$event.target.value">
-</label>
-    <button v-on:click="submitRailwaynCommand">Submit</button>
-</div>
-<br>
-<a href="/">Main</a>
-<br>
-<a href="welcome">Welcome</a>
 
 <script src="js/vue.js"></script>
 <script src="js/train.js"></script>
