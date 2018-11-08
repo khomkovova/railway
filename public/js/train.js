@@ -9,7 +9,7 @@ new Vue({
         submitTrainCommand(){
             console.log("asdfasdf");
             axios({ method: "POST", "url": "http:/api/settraincommand", data:'{"speed":' + this.speed + ', "direction":' + this.direction + '}' , withCredentials: true}).then(result => {
-                this.status = "Your commands send"
+                this.status = result.data;
             }, error => {
                 console.error(error);
             });

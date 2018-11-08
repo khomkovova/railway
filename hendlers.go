@@ -167,7 +167,14 @@ func SetTrainCommand(w http.ResponseWriter, r *http.Request)  {
 		w.WriteHeader(http.StatusBadRequest)
 		return
 	}
+	if (commands.Speed < 0 || commands.Speed > 8) || (commands.Direction != 0 && commands.Direction != 1) {
+		w.Write([]byte("Your command is bad"))
+		w.WriteHeader(http.StatusOK)
+		return
+
+	}
 	fmt.Println("Train commands = ", commands)
+	w.Write([]byte("Your commands send"))
 	w.WriteHeader(http.StatusOK)
 
 
@@ -193,6 +200,12 @@ func SetRailwayCommand(w http.ResponseWriter, r *http.Request)  {
 		return
 	}
 	fmt.Println("Railway commands = ", commandsRailwayTest)
+	if (commandsRailwayTest.Secondswitch != 0 && commandsRailwayTest.Secondswitch != 1) || (commandsRailwayTest.Firstswitch != 0 && commandsRailwayTest.Firstswitch != 1) {
+		w.Write([]byte("Your command is bad"))
+		w.WriteHeader(http.StatusOK)
+		return
+
+	}
 	if !checkCommandRailway(commandsRailwayTest){
 		w.Write([]byte("Now upgrade railway and choose direction can be dangeros we can write to support team https://supportrailway.com"))
 		w.WriteHeader(http.StatusOK)
@@ -203,6 +216,7 @@ func SetRailwayCommand(w http.ResponseWriter, r *http.Request)  {
 		w.WriteHeader(http.StatusBadRequest)
 		return
 	}
+	w.Write([]byte("Your commands send"))
 	w.WriteHeader(http.StatusOK)
 
 
@@ -266,7 +280,9 @@ func GetRailwayCommand(w http.ResponseWriter, r *http.Request){
 
 func checkCommandRailway(command CommandsRailway) bool {
 	//cmd := exec.Command("python3", "-m", "http.server")
-	cmd := exec.Command("./mycheck", string(command.Firstswitch) + string(command.Secondswitch))
+	commandStr := "./mycheck" + " " + string(command.Firstswitch + '0') + string(command.Secondswitch + '0')
+	fmt.Println(commandStr)
+	cmd := exec.Command("./mycheck", string(command.Firstswitch + '0') + string(command.Secondswitch + '0'))
 	var out bytes.Buffer
 	cmd.Stdout = &out
 	if err := cmd.Start(); err != nil {
