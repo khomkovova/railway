@@ -10,6 +10,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
+	"log"
 	"net/http"
 	"os"
 	"os/exec"
@@ -166,7 +167,14 @@ func SetTrainCommand(w http.ResponseWriter, r *http.Request)  {
 		w.WriteHeader(http.StatusBadRequest)
 		return
 	}
+	if (commands.Speed < 0 || commands.Speed > 8) || (commands.Direction != 0 && commands.Direction != 1) {
+		w.Write([]byte("Your command is bad"))
+		w.WriteHeader(http.StatusOK)
+		return
+
+	}
 	fmt.Println("Train commands = ", commands)
+	w.Write([]byte("Your commands send"))
 	w.WriteHeader(http.StatusOK)
 
 
@@ -192,6 +200,12 @@ func SetRailwayCommand(w http.ResponseWriter, r *http.Request)  {
 		return
 	}
 	fmt.Println("Railway commands = ", commandsRailwayTest)
+	if (commandsRailwayTest.Secondswitch != 0 && commandsRailwayTest.Secondswitch != 1) || (commandsRailwayTest.Firstswitch != 0 && commandsRailwayTest.Firstswitch != 1) {
+		w.Write([]byte("Your command is bad"))
+		w.WriteHeader(http.StatusOK)
+		return
+
+	}
 	if !checkCommandRailway(commandsRailwayTest){
 		w.Write([]byte("Now upgrade railway and choose direction can be dangeros we can write to support team https://supportrailway.com"))
 		w.WriteHeader(http.StatusOK)
@@ -202,6 +216,7 @@ func SetRailwayCommand(w http.ResponseWriter, r *http.Request)  {
 		w.WriteHeader(http.StatusBadRequest)
 		return
 	}
+	w.Write([]byte("Your commands send"))
 	w.WriteHeader(http.StatusOK)
 
 
@@ -264,21 +279,42 @@ func GetRailwayCommand(w http.ResponseWriter, r *http.Request){
 }
 
 func checkCommandRailway(command CommandsRailway) bool {
+	return true
 	//cmd := exec.Command("python3", "-m", "http.server")
-	fmt.Println("Check this railway command", command)
-	cmd := exec.Command("./mycheck", string(command.Firstswitch +'0')+string(command.Secondswitch +'0') )
+	commandStr := "./mycheck" + " " + string(command.Firstswitch + '0') + string(command.Secondswitch + '0')
+	fmt.Println(commandStr)
+	cmd := exec.Command("./mycheck", string(command.Firstswitch + '0') + string(command.Secondswitch + '0'))
 	var out bytes.Buffer
 	cmd.Stdout = &out
-	err := cmd.Run()
-	if err != nil {
-		fmt.Println("Error exc commands")
-		return false
+	if err := cmd.Start(); err != nil {
+		log.Fatal(err)
 	}
-	fmt.Println("Check return %s" , out.String())
-	if out.String() != "True"{
+
+	// Wait for the process to finish or kill it after a timeout:
+	done := make(chan error, 1)
+	go func() {
+		done <- cmd.Wait()
+	}()
+	select {
+	case <-time.After(10 * time.Millisecond):
+		if err := cmd.Process.Kill(); err != nil {
+			log.Fatal("failed to kill process: ", err)
+			return false
+		}
+		log.Println("process killed as timeout reached")
 		return false
+	case err := <-done:
+		if err != nil {
+			log.Fatalf("process finished with error = %v", err)
+			return false
+		}
+		log.Print("process finished successfully")
+		fmt.Println("Check return %s" , out.String())
+		if out.String() != "True"{
+			return false
+		}
+		return true
 	}
-	return true
 
 }
 func DownloadFirmware() {

@@ -45,26 +45,36 @@
     <p>{{status}}</p>
         <p>Firstswitch:</p>
         <br>
-        Right:  <label><input type="radio" value="1"  name="firstswithch" v-on:input="firstswitch=$event.target.value"/></label>
+        Right:  <label><input type="radio" value="1"  name="firstswitch" v-on:input="firstswitch=$event.target.value"/></label>
         <br>
-        Left:  <label><input type="radio" value="0" checked name="firstswithch" v-on:input="firstswitch=$event.target.value"></label>
+        Left:  <label><input type="radio" value="0" checked name="firstswitch" v-on:input="firstswitch=$event.target.value"></label>
         <br>
         <br>
 
         <p>Secondswitch:</p>
         <br>
-        Right:  <label><input type="radio" value="1"  name="secondswithch" v-on:input="secondswithch=$event.target.value"/></label>
+        Right:  <label><input type="radio" value="1"  name="secondswitch" v-on:input="secondswitch=$event.target.value"/></label>
         <br>
-        Left:  <label><input type="radio" value="0" checked name="secondswithch" v-on:input="secondswithch=$event.target.value"></label>
+        Left:  <label><input type="radio" value="0" checked name="secondswitch" v-on:input="secondswitch=$event.target.value"></label>
         <br>
         <br>
     <button class="btn" v-on:click="submitRailwaynCommand">Submit</button>
     </div>
 </dir>
 
+<<<<<<< HEAD
 <label class="switch">
     <input type="checkbox">
     <span class="slider"></span>
+=======
+<div id="railway">
+    <p>{{status}}</p>
+    Firstswitch:<label>
+    <input type="text"  v-on:input="firstswitch=$event.target.value">
+</label>
+    Secondtswitch:<label>
+    <input type="text" v-on:input="secondswitch=$event.target.value">
+>>>>>>> 4491cac66a7a224dd49e0b06e5f29923331933df
 </label>
 
 <script src="js/vue.js"></script>

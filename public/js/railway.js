@@ -8,7 +8,7 @@ new Vue({
     methods:{
         submitRailwaynCommand(){
             axios({ method: "POST", "url": "http:/api/setrailwaycommand", data:'{"firstswitch":' + this.firstswitch + ', "secondswitch":' + this.secondswitch + '}' , withCredentials: true}).then(result => {
-                this.status = "Your commands send"
+                this.status = result.data;
             }, error => {
                 console.error(error);
             });
