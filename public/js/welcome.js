@@ -2,7 +2,7 @@
 new Vue({
     el: '#railway',
     data:{
-        jsonInfo:"a",
+        jsonInfo:"",
         speed:0,
         direction:0,
         firstswitch:"",

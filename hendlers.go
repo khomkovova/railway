@@ -121,10 +121,11 @@ func ApiSignup(w http.ResponseWriter, r *http.Request)  {
 	}
 	id, err := Db.Query("INSERT INTO users (username,password)" + "VALUES ('" + creds.Username + "','" + creds.Password + "')" )
 	if err != nil{
-		w.Write([]byte("This username using or your credentials is not correct"))
+		id.Close()
+		w.Write([]byte("The username using or this credentials is not correct"))
 		return
 	}
-	id.Close()
+
 	w.Write([]byte("You success registered"))
 	w.WriteHeader(http.StatusOK)
 
@@ -168,13 +169,13 @@ func SetTrainCommand(w http.ResponseWriter, r *http.Request)  {
 		return
 	}
 	if (commands.Speed < 0 || commands.Speed > 8) || (commands.Direction != 0 && commands.Direction != 1) {
-		w.Write([]byte("Your command is bad"))
+		w.Write([]byte("Your commands are bad"))
 		w.WriteHeader(http.StatusOK)
 		return
 
 	}
 	fmt.Println("Train commands = ", commands)
-	w.Write([]byte("Your commands send"))
+	w.Write([]byte("Your commands were send"))
 	w.WriteHeader(http.StatusOK)
 
 
@@ -201,13 +202,13 @@ func SetRailwayCommand(w http.ResponseWriter, r *http.Request)  {
 	}
 	fmt.Println("Railway commands = ", commandsRailwayTest)
 	if (commandsRailwayTest.Secondswitch != 0 && commandsRailwayTest.Secondswitch != 1) || (commandsRailwayTest.Firstswitch != 0 && commandsRailwayTest.Firstswitch != 1) {
-		w.Write([]byte("Your command is bad"))
+		w.Write([]byte("Your commands are bad"))
 		w.WriteHeader(http.StatusOK)
 		return
 
 	}
 	if !checkCommandRailway(commandsRailwayTest){
-		w.Write([]byte("Now upgrade railway and choose direction can be dangeros we can write to support team https://supportrailway.com"))
+		w.Write([]byte("Railway upgrading!!!<br>Change direction can be dangerous.<br>You could write to support team for solving this problem"))
 		w.WriteHeader(http.StatusOK)
 		return
 	}

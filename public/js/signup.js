@@ -7,7 +7,6 @@ new Vue({
     },
     methods:{
         signup(){
-                console.log("asdfasdf");
             axios({ method: "POST", "url": "http:/api/signup", data:'{"username":"' + this.username + '", "password":"' + this.password + '"}' , withCredentials: true}).then(result => {
                 this.status = result.data;
             }, error => {
