@@ -27,7 +27,7 @@ func main() {
 	http.HandleFunc("/api/railwaycommand", GetRailwayCommand)
 	http.HandleFunc("/api/settraincommand", SetTrainCommand)
 	http.HandleFunc("/api/setrailwaycommand", SetRailwayCommand)
-	l, err := net.Listen("tcp4", ":8080")
+	l, err := net.Listen("tcp4", ":80")
 	if err != nil {
 		log.Fatal(err)
 	}
