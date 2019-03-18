@@ -87,6 +87,7 @@ func ApiSignin(w http.ResponseWriter, r *http.Request)  {
 		w.WriteHeader(http.StatusUnauthorized)
 		return
 	}
+	defer Db.Close()
 	cookie, err3 := encodeCookie(creds.Username)
 	if err3 == false{
 		w.WriteHeader(http.StatusBadRequest)
@@ -115,19 +116,21 @@ func ApiSignup(w http.ResponseWriter, r *http.Request)  {
 	}
 	fmt.Println("Signup with =", creds)
 	var Db, err2 = sql.Open("mysql", "root:Remidolov12345@@/railway?charset=utf8")
+
 	if err2 != nil {
 		w.WriteHeader(http.StatusBadRequest)
 		return
 	}
+	defer Db.Close()
 	var username string
-	_ = Db.QueryRow("SELECT username FROM users2 WHERE username=?", creds.Username).Scan(&username)
+	_ = Db.QueryRow("SELECT username FROM users WHERE username=?", creds.Username).Scan(&username)
 	fmt.Println("Username =- ", username)
 	if username != ""{
 		w.Write([]byte("Username is already taken"))
 		return
 	}
 
-	_, err = Db.Query("INSERT INTO users2 (username,password)" + "VALUES ('" + creds.Username + "','" + creds.Password + "')" )
+	_, err = Db.Query("INSERT INTO users (username,password)" + "VALUES ('" + creds.Username + "','" + creds.Password + "')" )
 	//id, err := Db.Query("INSERT INTO users2 (username,password) VALUES ( ?, ?)", creds.Username, creds.Password )
 	if err != nil{
 		w.Write([]byte("These credentials are incorrect"))
@@ -404,7 +407,7 @@ func getStatusUser(r *http.Request) bool {
 		return false
 	}
 	var username string
-	err := Db.QueryRow("SELECT username FROM users2 WHERE username=?", user).Scan(&username)
+	err := Db.QueryRow("SELECT username FROM users WHERE username=?", user).Scan(&username)
 	if err != nil || username == ""{
 		return false
 	}
