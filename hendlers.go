@@ -82,7 +82,7 @@ func ApiSignin(w http.ResponseWriter, r *http.Request)  {
 		return
 	}
 	var username string
-	err = Db.QueryRow("SELECT username FROM users WHERE username=? AND password=?", creds.Username, creds.Password).Scan(&username)
+	err = Db.QueryRow("SELECT username FROM users2 WHERE username=? AND password=?", creds.Username, creds.Password).Scan(&username)
 	if err != nil || username == ""{
 		w.WriteHeader(http.StatusUnauthorized)
 		return
@@ -119,14 +119,22 @@ func ApiSignup(w http.ResponseWriter, r *http.Request)  {
 		w.WriteHeader(http.StatusBadRequest)
 		return
 	}
-	id, err := Db.Query("INSERT INTO users (username,password)" + "VALUES ('" + creds.Username + "','" + creds.Password + "')" )
-	if err != nil{
-		id.Close()
-		w.Write([]byte("The username using or this credentials is not correct"))
+	var username string
+	_ = Db.QueryRow("SELECT username FROM users2 WHERE username=?", creds.Username).Scan(&username)
+	fmt.Println("Username =- ", username)
+	if username != ""{
+		w.Write([]byte("Username is already taken"))
 		return
 	}
 
-	w.Write([]byte("You success registered"))
+	_, err = Db.Query("INSERT INTO users2 (username,password)" + "VALUES ('" + creds.Username + "','" + creds.Password + "')" )
+	//id, err := Db.Query("INSERT INTO users2 (username,password) VALUES ( ?, ?)", creds.Username, creds.Password )
+	if err != nil{
+		w.Write([]byte("These credentials are incorrect"))
+		return
+	}
+
+	w.Write([]byte("You have successfully registered"))
 	w.WriteHeader(http.StatusOK)
 
 }
@@ -217,7 +225,7 @@ func SetRailwayCommand(w http.ResponseWriter, r *http.Request)  {
 		w.WriteHeader(http.StatusBadRequest)
 		return
 	}
-	w.Write([]byte("Your commands send"))
+	w.Write([]byte("Your commands are sended"))
 	w.WriteHeader(http.StatusOK)
 
 
@@ -396,7 +404,7 @@ func getStatusUser(r *http.Request) bool {
 		return false
 	}
 	var username string
-	err := Db.QueryRow("SELECT username FROM users WHERE username=?", user).Scan(&username)
+	err := Db.QueryRow("SELECT username FROM users2 WHERE username=?", user).Scan(&username)
 	if err != nil || username == ""{
 		return false
 	}
