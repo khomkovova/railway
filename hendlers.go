@@ -291,7 +291,7 @@ func GetRailwayCommand(w http.ResponseWriter, r *http.Request){
 }
 
 func checkCommandRailway(command CommandsRailway) bool {
-	return true
+	
 	//cmd := exec.Command("python3", "-m", "http.server")
 	commandStr := "./mycheck" + " " + string(command.Firstswitch + '0') + string(command.Secondswitch + '0')
 	fmt.Println(commandStr)
